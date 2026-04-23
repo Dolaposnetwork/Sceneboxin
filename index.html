@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asap! Dig in Top Animes for 2026 Latest Freely</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #ff3e3e;
+            --primary: #ff3e3e; /* Matches your play button logo */
             --bg: #0b0c10;
-            --glass: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
             --text: #ffffff;
+            --accent: #66fcf1; /* A contrasting 'electric blue' accent */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -20,110 +21,315 @@
             background-color: var(--bg);
             color: var(--text);
             overflow-x: hidden;
+            perspective: 1000px; /* Essential for 3D card tilt */
         }
 
-        /* Animated Background */
+        /* 🌌 Animated Parallax Background */
         .bg-glow {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1f2833 0%, #0b0c10 100%);
-            z-index: -1;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, #1f2833 0%, #0b0c10 80%);
+            z-index: -2;
+            transition: transform 0.1s ease-out; /* Smooth background move */
         }
 
-        /* Navbar */
+        /* 🛸 Navbar - Static & Blurry */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            background: rgba(11, 12, 16, 0.9);
+            backdrop-filter: blur(15px);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo { font-size: 24px; font-weight: 800; color: var(--primary); }
+        /* 🎈 New Animative Logo Section */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
 
-        /* Hero Section */
+        .logo-img {
+            width: 35px;
+            height: 35px;
+            /* Logo Funny Rebound on Load */
+            animation: logoBounce 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            opacity: 0;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -1px;
+        }
+
+        .logo-text span { color: var(--primary); }
+
+        @keyframes logoBounce {
+            0% { transform: translateY(-50px) scale(0); opacity: 0; }
+            60% { transform: translateY(10px) scale(1.1); opacity: 1; }
+            80% { transform: translateY(-5px) scale(0.95); }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* 🔍 Search Bar - Focus Animation */
+        .search-bar {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid transparent;
+            border-radius: 20px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            background: rgba(255,255,255,0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 62, 62, 0.4);
+            outline: none;
+            width: 300px; /* Grow on focus */
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s;
+        }
+
+        .search-bar input:focus + i { color: var(--primary); }
+
+        /* 🎬 Hero Section */
         .hero {
-            height: 60vh;
+            height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg)), 
+            background: linear-gradient(to bottom, rgba(11, 12, 16, 0.3), var(--bg)), 
                         url('https://images.alphacoders.com/131/1311654.jpg') center/cover;
             padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .hero h1 { font-size: 3rem; margin-bottom: 10px; text-transform: uppercase; }
-        .hero p { color: #c5c6c7; max-width: 600px; }
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: -2px;
+            line-height: 1;
+            /* Text Shine Animation */
+            background: linear-gradient(to right, #fff 20%, var(--primary) 40%, var(--primary) 60%, #fff 80%);
+            background-size: 200% auto;
+            color: #fff;
+            background-clip: text;
+            text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 4s linear infinite;
+        }
 
-        /* Movable/Floating Grid Interface */
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        .hero p { color: #c5c6c7; max-width: 600px; font-weight: 300; }
+
+        /* 🎛️ Movable Grid Interface */
         .container {
-            padding: 40px 5%;
+            padding: 20px 5% 100px 5%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .section-title {
-            margin-bottom: 30px;
             border-left: 5px solid var(--primary);
             padding-left: 15px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            font-weight: 800;
         }
+
+        .view-all {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: gap 0.3s;
+        }
+
+        .view-all:hover { gap: 10px; }
 
         .anime-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+            /* Entrance animation for the whole grid */
+            animation: gridFadeIn 1s ease-out;
         }
 
-        /* Anime Card with Hover Animation */
+        @keyframes gridFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 🃏 Anime Card with 3D Magnet Effect */
+        .card-perspective {
+            perspective: 1000px;
+        }
+
         .anime-card {
             background: var(--glass);
-            border-radius: 15px;
+            border-radius: 16px;
             overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* High-quality smooth transitions */
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
             cursor: pointer;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.03);
+            transform-style: preserve-3d; /* Required for 3D effect */
+            will-change: transform; /* Performance optimization */
         }
 
         .anime-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(255, 62, 62, 0.3);
+            border-color: rgba(255, 62, 62, 0.5);
+            box-shadow: 0 15px 50px rgba(255, 62, 62, 0.2);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            position: relative;
         }
 
         .anime-card img {
             width: 100%;
-            height: 280px;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
         }
+
+        .anime-card:hover img {
+            transform: scale(1.1) rotate(1deg); /* Funny little jiggle and zoom */
+        }
+
+        /* Overlay Play Button on Hover */
+        .card-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        .anime-card:hover .card-overlay { opacity: 1; }
+
+        .play-icon-giant {
+            font-size: 3rem;
+            color: var(--primary);
+            filter: drop-shadow(0 0 10px rgba(255,62,62,0.8));
+            transform: scale(0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .anime-card:hover .play-icon-giant { transform: scale(1); }
 
         .anime-info {
-            padding: 15px;
+            padding: 18px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            position: relative;
+            z-index: 3;
         }
 
-        .anime-info h3 { font-size: 1rem; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .anime-info h3 { 
+            font-size: 1.1rem; 
+            margin-bottom: 5px; 
+            font-weight: 600;
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            color: #fff;
+        }
         
+        .anime-info small { color: rgba(255,255,255,0.7); font-size: 0.8rem; font-weight: 300; }
+
         .badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             background: var(--primary);
-            padding: 5px 10px;
-            border-radius: 5px;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 0.7rem;
-            font-weight: bold;
+            font-weight: 700;
+            z-index: 4;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            /* Badge pulse */
+            animation: badgePulse 1.5s infinite;
         }
 
-        /* Floating Interactive Action Button */
+        @keyframes badgePulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(255, 62, 62, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); }
+        }
+
+        /* 🚨 Funny Notification Popup */
+        #funnyNotify {
+            position: fixed;
+            bottom: -100px;
+            right: 30px;
+            background: #1f2833;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 2000;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #funnyNotify.show { bottom: 30px; }
+
+        /* 🎛️ Floating Action Button - Enhanced */
         .fab {
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 30px; /* Moved to left to avoid clash with notification */
             width: 60px;
             height: 60px;
             background: var(--primary);
@@ -131,81 +337,163 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 25px rgba(255, 62, 62, 0.5);
             cursor: pointer;
             z-index: 999;
-            animation: pulse 2s infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(255, 62, 62, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); }
+        .fab:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 35px rgba(255, 62, 62, 0.7);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .anime-grid { grid-template-columns: repeat(2, 1fr); }
+        /* Responsive Fixes */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.5rem; }
+            .anime-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            .search-bar { width: 180px; }
+            .search-bar input:focus { width: 220px; }
+        }
+
+        @media (max-width: 600px) {
+            .logo-text { display: none; } /* Hide text on mobile */
+            .hero h1 { font-size: 1.8rem; }
+            .anime-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .img-container { height: 240px; }
+            .search-bar { width: 150px; }
+            .search-bar input:focus { width: 180px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
+    <div class="bg-glow" id="bgGlow"></div>
 
     <nav>
-        <div class="logo">ANIME2026</div>
+        <div class="logo-container" onclick="location.reload()">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAAD8/Pz4+Pj6+vr39/fy8vLv7+/j4+Pn5+fh4eHb29vX19fNzc3Dw8PIyMiurq6hoKGZmZmWlpZ8fHxycnJra2tsbGxQUFBPT09HR0dCQkJERER8fXxsbGxjY2NCQkJAQEBBQUFFRUVKSkpRUVFTU1NcXFxtbW14eHghWfP8AAAESklEQVR4nO3b2XLbMAxAYYm6L5YkWZatxE5S///L48RxbCeWSIBg0fO9AwwH4i4WIAESZAAAAAAAAAAAAAAAAAAAAAAAAMALFmU9T5vF8v3XN7x/XbUf28O0mYv15+b574/59/U45P12/3i7Wz5vF7vXfH+4H7/56/zN3fM3d978z4+3+1V/X/X5+9vHbeS7p/xT/fW5vH59un5mPvfPv33X9N3p++39+X77vOf/4p/19vYm1wXbM7H5mP80f/+06bvz+X+7tYVv+/p8W+X+W75/wX7P9fXl/893Xy+Y7Xdf6/65+94vK+/45rP/+fLp3bM+z7/fP5eXd8yY/xR8X4Ff/5/536nK/f5XjH+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvYPwVjL+C8Vcw/grGX8H4Kxh/BeOvbvU45P12/3i7Wz5vF7vXfH+4H7/56/zN3fM3d97858fb/aq/r/r8/e3jNvLdU/6p/v4pAAAAAADAPxX4D3OAL4M64S+mAAAAAElFTVSuQmCC" alt="Logo" class="logo-img">
+            <div class="logo-text">ANIME<span>2026</span></div>
+        </div>
         <div class="search-bar">
+            <input type="text" placeholder="Search freely...">
             <i class="fas fa-search"></i>
         </div>
     </nav>
 
     <header class="hero">
-        <h1>Asap! Dig in Top Animes for 2026</h1>
-        <p>Experience the next generation of streaming with the smoothest interface on the web. Free, Fast, and HD.</p>
+        <h1>Asap! Dig in Top Animes</h1>
+        <p>Welcome to Scenebox, the fastest streaming interface in existence. No lag, no limits, just pure Gen Z energy. Freely.</p>
     </header>
 
     <main class="container">
-        <h2 class="section-title">Latest Releases (2026)</h2>
-        <div class="anime-grid" id="animeGrid">
-            <div class="anime-card">
-                <span class="badge">EP 24</span>
-                <img src="https://via.placeholder.com/200x300/111/fff?text=Solo+Leveling+S2" alt="Anime Title">
-                <div class="anime-info">
-                    <h3>Solo Leveling: Arise</h3>
-                    <small>Action, Fantasy</small>
-                </div>
-            </div>
-            <div class="anime-card">
-                <span class="badge">EP 12</span>
-                <img src="https://via.placeholder.com/200x300/111/fff?text=Chainsaw+Man+Movie" alt="Anime Title">
-                <div class="anime-info">
-                    <h3>Chainsaw Man: Reze Arc</h3>
-                    <small>Dark Fantasy</small>
-                </div>
-            </div>
-            </div>
+        <div class="section-header">
+            <h2 class="section-title">Latest Releases (2026)</h2>
+            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <div class="anime-grid" id="animeGrid"></div>
     </main>
 
+    <div id="funnyNotify">
+        <i class="fas fa-skull play-icon" style="color:var(--accent); font-size:1.5rem;"></i>
+        <div>
+            <strong style="color:var(--accent);">Power Levels over 9000!</strong><br>
+            <small>Generating player interface... Hold your horses.</small>
+        </div>
+    </div>
+
     <div class="fab">
-        <span style="color:white; font-weight:bold;">HOT</span>
+        <i class="fas fa-fire" style="color:white; font-size:1.5rem;"></i>
     </div>
 
     <script>
-        // Simple Interaction: Smooth Scroll and Card Animations
-        document.querySelectorAll('.anime-card').forEach(card => {
-            card.addEventListener('click', () => {
-                alert("Redirecting to 2026 Player Interface...");
+        // --- 1. FUNCTIONAL CARD GENERATOR (12 CARDS) ---
+        const animeData = [
+            { title: "Solo Leveling: Arise S2", ep: "24", genre: "Action, Fantasy" },
+            { title: "Chainsaw Man: Reze Arc", ep: "Movie", genre: "Dark Fantasy" },
+            { title: "Jujutsu Kaisen: Culling Game", ep: "18", genre: "Action, Supernatural" },
+            { title: "Cyberpunk: Edgerunners 2", ep: "10", genre: "Sci-Fi, Cyborg" },
+            { title: "Demon Slayer: Infinity Castle", ep: "22", genre: "Action, Historical" },
+            { title: "Spy x Family Season 3", ep: "25", genre: "Comedy, Action" },
+            { title: "One Piece: Elbaf Arc", ep: "1150+", genre: "Adventure, Fantasy" },
+            { title: "Oshi No Ko Season 2", ep: "13", genre: "Drama, Music" },
+            { title: "Kaiju No. 8 S2", ep: "12", genre: "Action, Sci-Fi" },
+            { title: "Mushoku Tensei S3", ep: "24", genre: "Isekai, Fantasy" },
+            { title: "Blue Lock: U-20 Arc", ep: "20", genre: "Sports, Thriller" },
+            { title: "Bleach: TYBW Part 4", ep: "13", genre: "Action, Supernatural" }
+        ];
+
+        const grid = document.getElementById('animeGrid');
+        const notify = document.getElementById('funnyNotify');
+
+        // Generate 12 unique cards based on data above
+        animeData.forEach(anime => {
+            const card = document.createElement('div');
+            card.className = 'card-perspective'; // For 3D Tilt
+            card.innerHTML = `
+                <div class="anime-card">
+                    <span class="badge">EP ${anime.ep}</span>
+                    <div class="img-container">
+                        <div class="card-overlay">
+                            <i class="fas fa-play-circle play-icon-giant"></i>
+                        </div>
+                        <img src="https://via.placeholder.com/220x320/1a1d24/fff?text=${anime.title.replace(/ /g, '+')}" alt="${anime.title}">
+                    </div>
+                    <div class="anime-info">
+                        <h3>${anime.title}</h3>
+                        <small>${anime.genre}</small>
+                    </div>
+                </div>
+            `;
+            
+            // --- 2. FUNCTIONAL INTERACTION & FUNNY POPUP ---
+            card.querySelector('.anime-card').addEventListener('click', () => {
+                notify.classList.add('show');
+                // Hide after 3 seconds
+                setTimeout(() => notify.classList.remove('show'), 3500);
+            });
+
+            grid.appendChild(card);
+        });
+
+
+        // --- 3. MOVABLE INTERFACE: 3D MAGNET EFFECT FOR CARDS ---
+        const allCards = document.querySelectorAll('.anime-card');
+
+        allCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // Mouse X inside card
+                const y = e.clientY - rect.top;  // Mouse Y inside card
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Calculate tilt angles based on mouse distance from center
+                // Lower number = less sensitive tilt (smoother)
+                const tiltX = (y - centerY) / 10; 
+                const tiltY = (centerX - x) / 10;
+
+                // Apply dynamic 3D tilt and slight scale up
+                card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
+            });
+
+            // Reset tilt when mouse leaves the card
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
             });
         });
 
-        // Interface "Movement" - subtle mouse tracking for background
+
+        // --- 4. MOVABLE INTERFACE: PARALLAX BACKGROUND NUDGE ---
+        const bg = document.getElementById('bgGlow');
         document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX * -0.01);
-            const moveY = (e.clientY * -0.01);
-            document.querySelector('.bg-glow').style.transform = `translate(${moveX}px, ${moveY}px)`;
+            // Nudge background slightly in opposite direction of mouse
+            const moveX = (e.clientX * -0.005); 
+            const moveY = (e.clientY * -0.005);
+            bg.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
+
     </script>
 </body>
 </html>

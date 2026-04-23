@@ -3,318 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SceneBOX | The Future of Streaming</title>
+    <title>SceneBOX | Ultimate Stream</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #ff3e3e; 
-            --bg: #050505;
-            --surface: #121212;
-            --glass: rgba(255, 255, 255, 0.05);
-            --text: #ffffff;
-            --accent: #66fcf1;
-        }
+        :root { --primary: #ff3e3e; --bg: #050505; --surface: #181818; --text: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+        
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; position: fixed; width: 100%; top: 0; z-index: 1000; transition: 0.5s; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
+        nav.scrolled { background: #000; padding: 15px 6%; border-bottom: 1px solid #333; }
+        .nav-left { display: flex; align-items: center; gap: 30px; }
+        .logo { font-size: 28px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links li { cursor: pointer; color: #e5e5e5; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links li:hover, .nav-links li.active { color: var(--primary); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        /* Search */
+        .search-container { position: relative; display: flex; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid #444; border-radius: 4px; padding: 5px 10px; }
+        .search-container input { background: none; border: none; color: white; outline: none; width: 200px; padding-left: 10px; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        /* 🌌 Global Background FX */
-        .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, #1a1a1a 0%, #050505 100%);
-            z-index: -2;
-        }
-
-        /* 🛸 Premium Navbar */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 6%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: 0.4s;
-        }
-
-        nav.scrolled { background: var(--bg); padding: 12px 6%; border-bottom: 1px solid var(--glass); }
-
-        .logo-container { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: -1.5px; text-transform: uppercase; }
-        .logo-text span { color: var(--primary); }
-
-        .nav-links { display: flex; gap: 25px; list-style: none; margin-left: 40px; }
-        .nav-links a { color: #ccc; text-decoration: none; font-size: 0.9rem; transition: 0.3s; font-weight: 400; }
-        .nav-links a:hover { color: var(--primary); }
-
-        .nav-right { display: flex; align-items: center; gap: 20px; }
-
-        .search-box {
-            position: relative;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 5px 15px;
-            display: flex;
-            align-items: center;
-            border: 1px solid transparent;
-            transition: 0.3s;
-        }
-        .search-box:focus-within { border-color: var(--primary); width: 300px; }
-        .search-box input { background: none; border: none; color: white; padding: 5px 10px; outline: none; width: 180px; }
-
-        /* 🎬 Massive Hero Section */
-        .hero {
-            height: 85vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 0 6%;
-            background: linear-gradient(to right, rgba(0,0,0,0.9) 20%, transparent), 
-                        url('https://images.alphacoders.com/131/1311654.jpg') center/cover;
-        }
-
-        .hero-content { max-width: 650px; animation: fadeInUp 1s ease; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .hero-content h1 { font-size: 4.5rem; line-height: 1; margin-bottom: 20px; font-weight: 800; }
-        .hero-content p { color: #ddd; font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; }
-
+        /* Hero */
+        .hero { height: 80vh; background: linear-gradient(to right, #000 10%, transparent 60%), url('https://images.alphacoders.com/131/1311654.jpg') center/cover; display: flex; align-items: center; padding: 0 6%; margin-bottom: 30px; }
+        .hero-content { max-width: 600px; }
+        .hero-content h1 { font-size: 4rem; margin-bottom: 10px; }
+        .hero-content p { font-size: 1.1rem; color: #ccc; margin-bottom: 25px; }
         .btn-group { display: flex; gap: 15px; }
-        .btn {
-            padding: 12px 35px;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-        .btn-play { background: #fff; color: #000; }
-        .btn-play:hover { background: var(--primary); color: #fff; }
-        .btn-info { background: rgba(100,100,100,0.5); color: #fff; backdrop-filter: blur(10px); }
+        .btn { padding: 12px 30px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-play { background: white; color: black; }
+        .btn-play:hover { background: #e6e6e6; }
+        .btn-list { background: rgba(109, 109, 110, 0.7); color: white; }
 
-        /* 🎛️ Content Rows */
-        .main-content { padding: 40px 6%; position: relative; z-index: 10; margin-top: -100px; }
-        
-        .row-title { font-size: 1.6rem; margin-bottom: 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-        
-        .anime-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
+        /* Grid */
+        .content-section { padding: 0 6% 50px 6%; }
+        .row-title { font-size: 1.5rem; margin-bottom: 20px; font-weight: 600; }
+        .anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
 
-        /* 🃏 Netflix Style Cards */
-        .anime-card {
-            background: var(--surface);
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-            position: relative;
-        }
-        .anime-card:hover { transform: scale(1.1); z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        /* Cards */
+        .card { background: var(--surface); border-radius: 4px; overflow: hidden; cursor: pointer; transition: 0.3s; position: relative; }
+        .card:hover { transform: scale(1.08); z-index: 10; }
+        .card img { width: 100%; height: 280px; object-fit: cover; }
+        .card-info { padding: 10px; }
+        .card-controls { display: flex; gap: 10px; margin-top: 10px; }
+        .control-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+        .control-btn:hover { background: white; color: black; }
+        .control-btn.added { background: var(--primary); border-color: var(--primary); }
 
-        .img-box { width: 100%; height: 320px; position: relative; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .card-meta {
-            padding: 15px;
-            background: var(--surface);
-            transform: translateY(10px);
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .anime-card:hover .card-meta { transform: translateY(0); opacity: 1; }
-        
-        .card-btns { display: flex; gap: 10px; margin-bottom: 10px; }
-        .circ-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #888; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
-        .circ-btn:hover { border-color: white; background: rgba(255,255,255,0.1); }
+        /* Video Modal */
+        #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; }
+        .close-player { position: absolute; top: 20px; left: 20px; font-size: 2rem; cursor: pointer; z-index: 2100; }
 
-        .ep-tag { color: var(--accent); font-weight: 600; font-size: 0.8rem; margin-right: 10px; }
-
-        /* 📺 The Player UI */
-        #playerModal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000;
-        }
-        .player-container { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; }
-        .player-nav { padding: 20px; display: flex; align-items: center; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); position: absolute; width: 100%; z-index: 10; }
-        .back-btn { font-size: 2rem; color: white; cursor: pointer; margin-right: 20px; }
-
-        /* Empty State */
-        .no-results { text-align: center; padding: 100px; font-size: 1.5rem; color: #555; display: none; }
-
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
-            .anime-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        /* Toast Notification */
+        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); padding: 15px 25px; border-radius: 5px; transform: translateY(100px); transition: 0.5s; z-index: 3000; }
+        #toast.show { transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-
-    <nav id="navbar">
-        <div style="display:flex; align-items:center;">
-            <div class="logo-container" onclick="window.location.reload()">
-                <div class="logo-text">Scene<span>BOX</span></div>
-            </div>
+    <nav id="mainNav">
+        <div class="nav-left">
+            <div class="logo" onclick="showCategory('all')">Scene<span>BOX</span></div>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">TV Shows</a></li>
-                <li><a href="#">Movies</a></li>
-                <li><a href="#">New & Popular</a></li>
-                <li><a href="#">My List</a></li>
+                <li onclick="showCategory('all')" id="link-all" class="active">Home</li>
+                <li onclick="showCategory('TV')" id="link-TV">TV Shows</li>
+                <li onclick="showCategory('Movie')" id="link-Movie">Movies</li>
+                <li onclick="showMyList()" id="link-list">My List</li>
             </ul>
         </div>
-        <div class="nav-right">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="mainSearch" placeholder="Titles, genres, people">
-            </div>
-            <i class="fas fa-bell" style="cursor:pointer;"></i>
-            <div style="width:35px; height:35px; background:var(--primary); border-radius:4px; cursor:pointer;"></div>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Titles, genres...">
         </div>
     </nav>
 
-    <section class="hero" id="hero">
+    <header class="hero">
         <div class="hero-content">
-            <h1 id="heroTitle">Solo Leveling: Arise</h1>
-            <p id="heroDesc">In a world where hunters must battle deadly monsters to protect mankind, Sung Jinwoo, the weakest hunter of all, finds himself in an endless cycle of strength.</p>
+            <h1 id="h-title">Solo Leveling</h1>
+            <p id="h-desc">Jinwoo is about to change the world of hunters forever. Stream the latest episodes of the 2026 Arise Arc.</p>
             <div class="btn-group">
-                <button class="btn btn-play" onclick="playFeatured()"><i class="fas fa-play"></i> Play</button>
-                <button class="btn btn-info"><i class="fas fa-info-circle"></i> More Info</button>
+                <button class="btn btn-play" onclick="playMovie('https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Play</button>
+                <button class="btn btn-list" onclick="toggleMyList(1)"><i class="fas fa-plus"></i> My List</button>
             </div>
         </div>
-    </section>
+    </header>
 
-    <main class="main-content">
-        <div class="row-title">
-            <span>Trending Animes (2026)</span>
-        </div>
-        
-        <div class="anime-grid" id="animeGrid">
-            </div>
-
-        <div id="noResults" class="no-results">No matches found for your search.</div>
-    </main>
-
-    <div id="playerModal">
-        <div class="player-container">
-            <div class="player-nav">
-                <i class="fas fa-arrow-left back-btn" onclick="closePlayer()"></i>
-                <h2 id="nowPlayingTitle">Streaming Now</h2>
-            </div>
-            <iframe id="videoFrame" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
+    <div class="content-section">
+        <h2 class="row-title" id="gridTitle">Trending Now</h2>
+        <div class="anime-grid" id="mainGrid"></div>
     </div>
 
+    <div id="player">
+        <i class="fas fa-arrow-left close-player" onclick="closePlayer()"></i>
+        <iframe id="videoIframe" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div id="toast">Added to My List!</div>
+
     <script>
-        // 1. DATA (Your Movie Database)
-        const database = [
-            { id: 1, title: "Solo Leveling S2", ep: "24", genre: "Action, Fantasy", link: "https://www.youtube.com/embed/dQw4w9WgXcQ", desc: "Jinwoo returns to conquer the S-Rank dungeons." },
-            { id: 2, title: "Chainsaw Man: Movie", ep: "Movie", genre: "Dark Fantasy", link: "https://www.youtube.com/embed/v4yLeN65S_8", desc: "The Reze arc comes to the big screen." },
-            { id: 3, title: "Jujutsu Kaisen S3", ep: "18", genre: "Supernatural", link: "https://www.youtube.com/embed/O6qV3BiBaC0", desc: "The Culling Game begins." },
-            { id: 4, title: "Cyberpunk 2", ep: "10", genre: "Sci-Fi", link: "https://www.youtube.com/embed/PqsREu6it8M", desc: "A new legend rises in Night City." },
-            { id: 5, title: "Demon Slayer: Castle", ep: "22", genre: "Action", link: "https://www.youtube.com/embed/VQGCKyvzIM4", desc: "The final battle in the Infinity Castle." },
-            { id: 6, title: "Spy x Family S3", ep: "25", genre: "Comedy", link: "https://www.youtube.com/embed/S8_YwSjs8U4", desc: "Anya faces her toughest school mission yet." },
-            { id: 7, title: "One Piece: Elbaf", ep: "1150+", genre: "Adventure", link: "https://www.youtube.com/embed/S8_YwSjs8U4", desc: "The Straw Hats finally reach the land of Giants." },
-            { id: 8, title: "Oshi No Ko S2", ep: "13", genre: "Drama", link: "https://www.youtube.com/embed/O6qV3BiBaC0", desc: "The dark side of the idol industry deepens." }
+        // 1. THE DATABASE
+        const movies = [
+            { id: 1, title: "Solo Leveling", type: "TV", genre: "Action", link: "https://www.youtube.com/embed/dQw4w9WgXcQ", img: "https://via.placeholder.com/200x280/111/fff?text=Solo+Leveling" },
+            { id: 2, title: "Chainsaw Man", type: "Movie", genre: "Fantasy", link: "https://www.youtube.com/embed/v4yLeN65S_8", img: "https://via.placeholder.com/200x280/111/fff?text=Chainsaw+Man" },
+            { id: 3, title: "Jujutsu Kaisen", type: "TV", genre: "Action", link: "https://www.youtube.com/embed/O6qV3BaBaC0", img: "https://via.placeholder.com/200x280/111/fff?text=JJK" },
+            { id: 4, title: "Cyberpunk 2", type: "TV", genre: "Sci-Fi", link: "https://www.youtube.com/embed/PqsREu6it8M", img: "https://via.placeholder.com/200x280/111/fff?text=Cyberpunk" },
+            { id: 5, title: "Demon Slayer", type: "Movie", genre: "Action", link: "https://www.youtube.com/embed/VQGCKyvzIM4", img: "https://via.placeholder.com/200x280/111/fff?text=Demon+Slayer" },
+            { id: 6, title: "Spy x Family", type: "TV", genre: "Comedy", link: "https://www.youtube.com/embed/S8_YwSjs8U4", img: "https://via.placeholder.com/200x280/111/fff?text=Spy+X+Family" }
         ];
 
-        const grid = document.getElementById('animeGrid');
-        const searchInput = document.getElementById('mainSearch');
-        const playerModal = document.getElementById('playerModal');
-        const videoFrame = document.getElementById('videoFrame');
+        let myList = JSON.parse(localStorage.getItem('sceneBoxList')) || [];
 
-        // 2. RENDER ENGINE
-        function render(items) {
-            grid.innerHTML = '';
-            if(items.length === 0) {
-                document.getElementById('noResults').style.display = 'block';
-                return;
-            }
-            document.getElementById('noResults').style.display = 'none';
-
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'anime-card';
-                card.innerHTML = `
-                    <div class="img-box">
-                        <img src="https://via.placeholder.com/300x450/111/fff?text=${item.title.replace(/ /g, '+')}" alt="">
-                    </div>
-                    <div class="card-meta">
-                        <div class="card-btns">
-                            <div class="circ-btn" onclick="openPlayer('${item.link}', '${item.title}')"><i class="fas fa-play"></i></div>
-                            <div class="circ-btn"><i class="fas fa-plus"></i></div>
-                            <div class="circ-btn"><i class="fas fa-thumbs-up"></i></div>
+        // 2. RENDERING LOGIC
+        function renderGrid(data) {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = data.map(m => {
+                const isAdded = myList.includes(m.id);
+                return `
+                    <div class="card">
+                        <img src="${m.img}" alt="${m.title}" onclick="playMovie('${m.link}')">
+                        <div class="card-info">
+                            <h4>${m.title}</h4>
+                            <div class="card-controls">
+                                <div class="control-btn" onclick="playMovie('${m.link}')"><i class="fas fa-play"></i></div>
+                                <div class="control-btn ${isAdded ? 'added' : ''}" onclick="toggleMyList(${m.id})">
+                                    <i class="fas ${isAdded ? 'fa-check' : 'fa-plus'}"></i>
+                                </div>
+                            </div>
                         </div>
-                        <p><span class="ep-tag">EP ${item.ep}</span> <small>${item.genre}</small></p>
                     </div>
                 `;
-                card.onclick = () => updateHero(item);
-                grid.appendChild(card);
-            });
+            }).join('');
         }
 
-        // 3. PLAYER FUNCTIONS
-        function openPlayer(link, title) {
-            document.getElementById('nowPlayingTitle').innerText = "Streaming: " + title;
-            videoFrame.src = link + "?autoplay=1";
-            playerModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        // 3. FUNCTIONAL BUTTONS
+        function playMovie(link) {
+            document.getElementById('videoIframe').src = link + "?autoplay=1";
+            document.getElementById('player').style.display = 'block';
         }
 
         function closePlayer() {
-            playerModal.style.display = 'none';
-            videoFrame.src = "";
-            document.body.style.overflow = 'auto';
+            document.getElementById('player').style.display = 'none';
+            document.getElementById('videoIframe').src = "";
         }
 
-        function playFeatured() {
-            const currentTitle = document.getElementById('heroTitle').innerText;
-            const item = database.find(a => a.title === currentTitle);
-            openPlayer(item.link, item.title);
+        function toggleMyList(id) {
+            const index = myList.indexOf(id);
+            if (index === -1) {
+                myList.push(id);
+                showToast("Added to My List!");
+            } else {
+                myList.splice(index, 1);
+                showToast("Removed from My List");
+            }
+            localStorage.setItem('sceneBoxList', JSON.stringify(myList));
+            renderGrid(movies); // Refresh UI
         }
 
-        // 4. INTERFACE LOGIC
-        function updateHero(item) {
-            document.getElementById('heroTitle').innerText = item.title;
-            document.getElementById('heroDesc').innerText = item.desc;
-            // You can also change the hero background here
-            window.scrollTo(0,0);
+        function showCategory(type) {
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+            document.getElementById('link-' + type).classList.add('active');
+            
+            if (type === 'all') {
+                renderGrid(movies);
+                document.getElementById('gridTitle').innerText = "Trending Now";
+            } else {
+                const filtered = movies.filter(m => m.type === type);
+                renderGrid(filtered);
+                document.getElementById('gridTitle').innerText = type === 'TV' ? "TV Shows" : "Movies";
+            }
         }
 
-        // Navbar scroll effect
-        window.onscroll = () => {
-            if (window.scrollY > 50) document.getElementById('navbar').classList.add('scrolled');
-            else document.getElementById('navbar').classList.remove('scrolled');
-        };
+        function showMyList() {
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+            document.getElementById('link-list').classList.add('active');
+            const filtered = movies.filter(m => myList.includes(m.id));
+            renderGrid(filtered);
+            document.getElementById('gridTitle').innerText = "My List";
+            if(filtered.length === 0) document.getElementById('mainGrid').innerHTML = "<p>Your list is empty.</p>";
+        }
 
-        // Live Search
-        searchInput.oninput = (e) => {
+        // 4. SEARCH FUNCTIONALITY
+        document.getElementById('searchInput').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
-            const filtered = database.filter(i => i.title.toLowerCase().includes(val) || i.genre.toLowerCase().includes(val));
-            render(filtered);
-        };
+            const filtered = movies.filter(m => m.title.toLowerCase().includes(val) || m.genre.toLowerCase().includes(val));
+            renderGrid(filtered);
+            document.getElementById('gridTitle').innerText = "Search Results";
+        });
 
-        // Init
-        render(database);
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 50) document.getElementById('mainNav').classList.add('scrolled');
+            else document.getElementById('mainNav').classList.remove('scrolled');
+        });
+
+        // Initialize
+        renderGrid(movies);
     </script>
 </body>
 </html>

@@ -1,211 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SceneBOX | Ultimate Stream</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #ff3e3e; --bg: #050505; --surface: #181818; --text: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
-        
-        /* Navigation */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 6%; position: fixed; width: 100%; top: 0; z-index: 1000; transition: 0.5s; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
-        nav.scrolled { background: #000; padding: 15px 6%; border-bottom: 1px solid #333; }
-        .nav-left { display: flex; align-items: center; gap: 30px; }
-        .logo { font-size: 28px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 20px; list-style: none; }
-        .nav-links li { cursor: pointer; color: #e5e5e5; font-size: 0.9rem; transition: 0.3s; }
-        .nav-links li:hover, .nav-links li.active { color: var(--primary); }
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Play, X, Info, Menu } from 'lucide-react';
 
-        /* Search */
-        .search-container { position: relative; display: flex; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid #444; border-radius: 4px; padding: 5px 10px; }
-        .search-container input { background: none; border: none; color: white; outline: none; width: 200px; padding-left: 10px; }
+const SceneBOX = () => {
+  const [selectedAnime, setSelectedAnime] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-        /* Hero */
-        .hero { height: 80vh; background: linear-gradient(to right, #000 10%, transparent 60%), url('https://images.alphacoders.com/131/1311654.jpg') center/cover; display: flex; align-items: center; padding: 0 6%; margin-bottom: 30px; }
-        .hero-content { max-width: 600px; }
-        .hero-content h1 { font-size: 4rem; margin-bottom: 10px; }
-        .hero-content p { font-size: 1.1rem; color: #ccc; margin-bottom: 25px; }
-        .btn-group { display: flex; gap: 15px; }
-        .btn { padding: 12px 30px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .btn-play { background: white; color: black; }
-        .btn-play:hover { background: #e6e6e6; }
-        .btn-list { background: rgba(109, 109, 110, 0.7); color: white; }
+  // Mouse trail effect logic
+  useEffect(() => {
+    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-        /* Grid */
-        .content-section { padding: 0 6% 50px 6%; }
-        .row-title { font-size: 1.5rem; margin-bottom: 20px; font-weight: 600; }
-        .anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  const animeList = [
+    { id: 1, title: "Jujutsu Kaisen", year: "2024", id_yt: "h8nS_Vq9C_o", img: "https://images.unsplash.com/photo-1578632292335-df3abbb0d586?q=80&w=400" },
+    { id: 2, title: "Chainsaw Man", year: "2023", id_yt: "v4yLeNt-kCU", img: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=400" },
+    { id: 3, title: "Demon Slayer", year: "2024", id_yt: "VQGCKyvzIM4", img: "https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=400" },
+    { id: 4, title: "Solo Leveling", year: "2024", id_yt: "mI1-pAnYqD8", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400" },
+  ];
 
-        /* Cards */
-        .card { background: var(--surface); border-radius: 4px; overflow: hidden; cursor: pointer; transition: 0.3s; position: relative; }
-        .card:hover { transform: scale(1.08); z-index: 10; }
-        .card img { width: 100%; height: 280px; object-fit: cover; }
-        .card-info { padding: 10px; }
-        .card-controls { display: flex; gap: 10px; margin-top: 10px; }
-        .control-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .control-btn:hover { background: white; color: black; }
-        .control-btn.added { background: var(--primary); border-color: var(--primary); }
+  return (
+    <div className="min-h-screen bg-neutral-950 text-white font-sans selection:bg-purple-500 overflow-x-hidden">
+      
+      {/* Interactive Cursor Trail */}
+      <motion.div 
+        className="fixed top-0 left-0 w-8 h-8 bg-purple-500 rounded-full blur-2xl pointer-events-none z-50 opacity-30"
+        animate={{ x: mousePos.x - 16, y: mousePos.y - 16 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+      />
 
-        /* Video Modal */
-        #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; }
-        .close-player { position: absolute; top: 20px; left: 20px; font-size: 2rem; cursor: pointer; z-index: 2100; }
-
-        /* Toast Notification */
-        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); padding: 15px 25px; border-radius: 5px; transform: translateY(100px); transition: 0.5s; z-index: 3000; }
-        #toast.show { transform: translateY(0); }
-    </style>
-</head>
-<body>
-
-    <nav id="mainNav">
-        <div class="nav-left">
-            <div class="logo" onclick="showCategory('all')">Scene<span>BOX</span></div>
-            <ul class="nav-links">
-                <li onclick="showCategory('all')" id="link-all" class="active">Home</li>
-                <li onclick="showCategory('TV')" id="link-TV">TV Shows</li>
-                <li onclick="showCategory('Movie')" id="link-Movie">Movies</li>
-                <li onclick="showMyList()" id="link-list">My List</li>
-            </ul>
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-40 bg-gradient-to-b from-black/80 to-transparent p-6 flex justify-between items-center px-10">
+        <h1 className="text-3xl font-black tracking-tighter text-purple-500 italic">SceneBOX</h1>
+        <div className="flex items-center gap-6">
+          <div className="relative hidden md:block">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
+            <input 
+              type="text" 
+              placeholder="Titles, people, genres"
+              className="bg-neutral-900/50 border border-neutral-700 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 ring-purple-500 transition-all w-64"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <Menu className="w-6 h-6 cursor-pointer" />
         </div>
-        <div class="search-container">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Titles, genres...">
-        </div>
-    </nav>
+      </nav>
 
-    <header class="hero">
-        <div class="hero-content">
-            <h1 id="h-title">Solo Leveling</h1>
-            <p id="h-desc">Jinwoo is about to change the world of hunters forever. Stream the latest episodes of the 2026 Arise Arc.</p>
-            <div class="btn-group">
-                <button class="btn btn-play" onclick="playMovie('https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Play</button>
-                <button class="btn btn-list" onclick="toggleMyList(1)"><i class="fas fa-plus"></i> My List</button>
-            </div>
+      {/* Hero Section */}
+      <section className="relative h-[85vh] flex items-center px-10 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src="https://images.unsplash.com/photo-1613373123016-814830ce18f4?q=80&w=1200" className="w-full h-full object-cover opacity-40" alt="Hero" />
+          <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
         </div>
-    </header>
 
-    <div class="content-section">
-        <h2 class="row-title" id="gridTitle">Trending Now</h2>
-        <div class="anime-grid" id="mainGrid"></div>
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          className="relative z-10 max-w-2xl"
+        >
+          <span className="text-purple-400 font-bold tracking-widest uppercase text-sm mb-4 block">Streaming Now in Nigeria</span>
+          <h2 className="text-7xl font-black mb-6 leading-tight">UNLEASH THE <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">ANIME WITHIN</span></h2>
+          <div className="flex gap-4">
+            <button className="bg-white text-black px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-neutral-200 transition">
+              <Play fill="black" /> Watch Free
+            </button>
+            <button className="bg-neutral-800/80 backdrop-blur-md px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-neutral-700 transition">
+              <Info /> More Info
+            </button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Anime Grid */}
+      <section className="px-10 pb-20 -mt-20 relative z-20">
+        <h3 className="text-2xl font-bold mb-6">Trending in Lagos</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {animeList.filter(a => a.title.toLowerCase().includes(searchQuery.toLowerCase())).map((anime) => (
+            <motion.div 
+              key={anime.id}
+              whileHover={{ scale: 1.05, zIndex: 30 }}
+              onClick={() => setSelectedAnime(anime)}
+              className="relative cursor-pointer rounded-lg overflow-hidden group shadow-2xl"
+            >
+              <img src={anime.img} alt={anime.title} className="w-full aspect-[2/3] object-cover" />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                <p className="font-bold text-lg leading-tight">{anime.title}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <Play className="w-4 h-4 fill-purple-500 text-purple-500" />
+                  <span className="text-xs text-neutral-300">{anime.year}</span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Watch Modal */}
+      <AnimatePresence>
+        {selectedAnime && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }}
+              className="bg-neutral-900 w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl relative"
+            >
+              <button onClick={() => setSelectedAnime(null)} className="absolute top-4 right-4 z-[60] bg-black/50 p-2 rounded-full hover:bg-neutral-700">
+                <X className="w-6 h-6" />
+              </button>
+              
+              <div className="aspect-video w-full">
+                <iframe 
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${selectedAnime.id_yt}?autoplay=1`}
+                  title="Anime Player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              
+              <div className="p-8">
+                <h4 className="text-3xl font-bold mb-2">{selectedAnime.title}</h4>
+                <p className="text-neutral-400">Nigeria's #1 Japanese Import • Action • Drama</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
+  );
+};
 
-    <div id="player">
-        <i class="fas fa-arrow-left close-player" onclick="closePlayer()"></i>
-        <iframe id="videoIframe" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-
-    <div id="toast">Added to My List!</div>
-
-    <script>
-        // 1. THE DATABASE
-        const movies = [
-            { id: 1, title: "Solo Leveling", type: "TV", genre: "Action", link: "https://www.youtube.com/embed/dQw4w9WgXcQ", img: "https://via.placeholder.com/200x280/111/fff?text=Solo+Leveling" },
-            { id: 2, title: "Chainsaw Man", type: "Movie", genre: "Fantasy", link: "https://www.youtube.com/embed/v4yLeN65S_8", img: "https://via.placeholder.com/200x280/111/fff?text=Chainsaw+Man" },
-            { id: 3, title: "Jujutsu Kaisen", type: "TV", genre: "Action", link: "https://www.youtube.com/embed/O6qV3BaBaC0", img: "https://via.placeholder.com/200x280/111/fff?text=JJK" },
-            { id: 4, title: "Cyberpunk 2", type: "TV", genre: "Sci-Fi", link: "https://www.youtube.com/embed/PqsREu6it8M", img: "https://via.placeholder.com/200x280/111/fff?text=Cyberpunk" },
-            { id: 5, title: "Demon Slayer", type: "Movie", genre: "Action", link: "https://www.youtube.com/embed/VQGCKyvzIM4", img: "https://via.placeholder.com/200x280/111/fff?text=Demon+Slayer" },
-            { id: 6, title: "Spy x Family", type: "TV", genre: "Comedy", link: "https://www.youtube.com/embed/S8_YwSjs8U4", img: "https://via.placeholder.com/200x280/111/fff?text=Spy+X+Family" }
-        ];
-
-        let myList = JSON.parse(localStorage.getItem('sceneBoxList')) || [];
-
-        // 2. RENDERING LOGIC
-        function renderGrid(data) {
-            const grid = document.getElementById('mainGrid');
-            grid.innerHTML = data.map(m => {
-                const isAdded = myList.includes(m.id);
-                return `
-                    <div class="card">
-                        <img src="${m.img}" alt="${m.title}" onclick="playMovie('${m.link}')">
-                        <div class="card-info">
-                            <h4>${m.title}</h4>
-                            <div class="card-controls">
-                                <div class="control-btn" onclick="playMovie('${m.link}')"><i class="fas fa-play"></i></div>
-                                <div class="control-btn ${isAdded ? 'added' : ''}" onclick="toggleMyList(${m.id})">
-                                    <i class="fas ${isAdded ? 'fa-check' : 'fa-plus'}"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // 3. FUNCTIONAL BUTTONS
-        function playMovie(link) {
-            document.getElementById('videoIframe').src = link + "?autoplay=1";
-            document.getElementById('player').style.display = 'block';
-        }
-
-        function closePlayer() {
-            document.getElementById('player').style.display = 'none';
-            document.getElementById('videoIframe').src = "";
-        }
-
-        function toggleMyList(id) {
-            const index = myList.indexOf(id);
-            if (index === -1) {
-                myList.push(id);
-                showToast("Added to My List!");
-            } else {
-                myList.splice(index, 1);
-                showToast("Removed from My List");
-            }
-            localStorage.setItem('sceneBoxList', JSON.stringify(myList));
-            renderGrid(movies); // Refresh UI
-        }
-
-        function showCategory(type) {
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            document.getElementById('link-' + type).classList.add('active');
-            
-            if (type === 'all') {
-                renderGrid(movies);
-                document.getElementById('gridTitle').innerText = "Trending Now";
-            } else {
-                const filtered = movies.filter(m => m.type === type);
-                renderGrid(filtered);
-                document.getElementById('gridTitle').innerText = type === 'TV' ? "TV Shows" : "Movies";
-            }
-        }
-
-        function showMyList() {
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            document.getElementById('link-list').classList.add('active');
-            const filtered = movies.filter(m => myList.includes(m.id));
-            renderGrid(filtered);
-            document.getElementById('gridTitle').innerText = "My List";
-            if(filtered.length === 0) document.getElementById('mainGrid').innerHTML = "<p>Your list is empty.</p>";
-        }
-
-        // 4. SEARCH FUNCTIONALITY
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = movies.filter(m => m.title.toLowerCase().includes(val) || m.genre.toLowerCase().includes(val));
-            renderGrid(filtered);
-            document.getElementById('gridTitle').innerText = "Search Results";
-        });
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            if(window.scrollY > 50) document.getElementById('mainNav').classList.add('scrolled');
-            else document.getElementById('mainNav').classList.remove('scrolled');
-        });
-
-        // Initialize
-        renderGrid(movies);
-    </script>
-</body>
-</html>
+export default SceneBOX;

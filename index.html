@@ -1,139 +1,191 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Play, X, Info, Menu } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SceneBOX</title>
 
-const SceneBOX = () => {
-  const [selectedAnime, setSelectedAnime] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b1a;
+  color: white;
+  overflow-x: hidden;
+}
 
-  // Mouse trail effect logic
-  useEffect(() => {
-    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+/* HEADER */
+header {
+  text-align: center;
+  padding: 30px 10px;
+}
+header h1 {
+  font-size: 40px;
+  margin: 0;
+}
+header span {
+  color: #a855f7;
+}
 
-  const animeList = [
-    { id: 1, title: "Jujutsu Kaisen", year: "2024", id_yt: "h8nS_Vq9C_o", img: "https://images.unsplash.com/photo-1578632292335-df3abbb0d586?q=80&w=400" },
-    { id: 2, title: "Chainsaw Man", year: "2023", id_yt: "v4yLeNt-kCU", img: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=400" },
-    { id: 3, title: "Demon Slayer", year: "2024", id_yt: "VQGCKyvzIM4", img: "https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=400" },
-    { id: 4, title: "Solo Leveling", year: "2024", id_yt: "mI1-pAnYqD8", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400" },
-  ];
+/* SEARCH */
+.search {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.search input {
+  width: 80%;
+  max-width: 400px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: #14142b;
+  color: white;
+}
 
-  return (
-    <div className="min-h-screen bg-neutral-950 text-white font-sans selection:bg-purple-500 overflow-x-hidden">
-      
-      {/* Interactive Cursor Trail */}
-      <motion.div 
-        className="fixed top-0 left-0 w-8 h-8 bg-purple-500 rounded-full blur-2xl pointer-events-none z-50 opacity-30"
-        animate={{ x: mousePos.x - 16, y: mousePos.y - 16 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      />
+/* HERO */
+.hero {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #6d28d9, #2563eb);
+  cursor: pointer;
+  transition: 0.3s;
+}
+.hero:hover {
+  transform: scale(1.02);
+}
 
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-40 bg-gradient-to-b from-black/80 to-transparent p-6 flex justify-between items-center px-10">
-        <h1 className="text-3xl font-black tracking-tighter text-purple-500 italic">SceneBOX</h1>
-        <div className="flex items-center gap-6">
-          <div className="relative hidden md:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
-            <input 
-              type="text" 
-              placeholder="Titles, people, genres"
-              className="bg-neutral-900/50 border border-neutral-700 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 ring-purple-500 transition-all w-64"
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <Menu className="w-6 h-6 cursor-pointer" />
-        </div>
-      </nav>
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 20px;
+}
+.card {
+  background: #14142b;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+.thumb {
+  height: 100px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #9333ea, #3b82f6);
+  margin-bottom: 8px;
+}
 
-      {/* Hero Section */}
-      <section className="relative h-[85vh] flex items-center px-10 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img src="https://images.unsplash.com/photo-1613373123016-814830ce18f4?q=80&w=1200" className="w-full h-full object-cover opacity-40" alt="Hero" />
-          <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
-        </div>
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #14142b;
+  padding: 15px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+}
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+iframe {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+}
+</style>
+</head>
 
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          className="relative z-10 max-w-2xl"
-        >
-          <span className="text-purple-400 font-bold tracking-widest uppercase text-sm mb-4 block">Streaming Now in Nigeria</span>
-          <h2 className="text-7xl font-black mb-6 leading-tight">UNLEASH THE <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">ANIME WITHIN</span></h2>
-          <div className="flex gap-4">
-            <button className="bg-white text-black px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-neutral-200 transition">
-              <Play fill="black" /> Watch Free
-            </button>
-            <button className="bg-neutral-800/80 backdrop-blur-md px-8 py-3 rounded-md font-bold flex items-center gap-2 hover:bg-neutral-700 transition">
-              <Info /> More Info
-            </button>
-          </div>
-        </motion.div>
-      </section>
+<body>
 
-      {/* Anime Grid */}
-      <section className="px-10 pb-20 -mt-20 relative z-20">
-        <h3 className="text-2xl font-bold mb-6">Trending in Lagos</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {animeList.filter(a => a.title.toLowerCase().includes(searchQuery.toLowerCase())).map((anime) => (
-            <motion.div 
-              key={anime.id}
-              whileHover={{ scale: 1.05, zIndex: 30 }}
-              onClick={() => setSelectedAnime(anime)}
-              className="relative cursor-pointer rounded-lg overflow-hidden group shadow-2xl"
-            >
-              <img src={anime.img} alt={anime.title} className="w-full aspect-[2/3] object-cover" />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                <p className="font-bold text-lg leading-tight">{anime.title}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <Play className="w-4 h-4 fill-purple-500 text-purple-500" />
-                  <span className="text-xs text-neutral-300">{anime.year}</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+<header>
+  <h1>Scene<span>BOX</span></h1>
+  <p>Nigeria Anime Streaming Platform 2026</p>
+</header>
 
-      {/* Watch Modal */}
-      <AnimatePresence>
-        {selectedAnime && (
-          <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl"
-          >
-            <motion.div 
-              initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }}
-              className="bg-neutral-900 w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl relative"
-            >
-              <button onClick={() => setSelectedAnime(null)} className="absolute top-4 right-4 z-[60] bg-black/50 p-2 rounded-full hover:bg-neutral-700">
-                <X className="w-6 h-6" />
-              </button>
-              
-              <div className="aspect-video w-full">
-                <iframe 
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${selectedAnime.id_yt}?autoplay=1`}
-                  title="Anime Player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              
-              <div className="p-8">
-                <h4 className="text-3xl font-bold mb-2">{selectedAnime.title}</h4>
-                <p className="text-neutral-400">Nigeria's #1 Japanese Import • Action • Drama</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+<div class="search">
+  <input id="search" placeholder="Search anime..." onkeyup="filterAnime()" />
+</div>
+
+<div class="hero" onclick="openModal(featured)">
+  <h2>🔥 Featured: Demon Slayer Infinity Arc</h2>
+  <p>Click to watch</p>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="close" onclick="closeModal()">✖</div>
+    <h3 id="title"></h3>
+    <iframe id="video" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+const anime = [
+  { title: "Attack on Titan", id: "MGRm4IzK1SQ" },
+  { title: "Jujutsu Kaisen", id: "n0Jv7d6P7gE" },
+  { title: "Naruto", id: "QH5H7s3R3mY" },
+  { title: "One Piece", id: "S_E5EHzgZ2k" }
+];
+
+const featured = {
+  title: "Demon Slayer Infinity Arc",
+  id: "VQGCKyvzIM4"
 };
 
-export default SceneBOX;
+const grid = document.getElementById("grid");
+
+function render(list){
+  grid.innerHTML = "";
+  list.forEach(a => {
+    grid.innerHTML += `
+      <div class="card" onclick="openModal(${JSON.stringify(a)})">
+        <div class="thumb"></div>
+        <p>${a.title}</p>
+      </div>
+    `;
+  });
+}
+
+function filterAnime(){
+  const val = document.getElementById("search").value.toLowerCase();
+  render(anime.filter(a => a.title.toLowerCase().includes(val)));
+}
+
+function openModal(data){
+  document.getElementById("modal").style.display = "flex";
+  document.getElementById("title").innerText = data.title;
+  document.getElementById("video").src = "https://www.youtube.com/embed/" + data.id;
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+  document.getElementById("video").src = "";
+}
+
+render(anime);
+</script>
+
+</body>
+</html>

@@ -3,110 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SceneBOX | Nigeria 2026</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <title>SceneBOX - Nigeria's Anime Streaming Platform</title>
     
     <style>
-        body { margin: 0; background-color: #0a0a0a; color: white; font-family: sans-serif; overflow-x: hidden; }
-        .hero-gradient { background: linear-gradient(90deg, #0a0a0a 0%, rgba(10,10,10,0.7) 50%, transparent 100%); }
+        /* CSS STYLES */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #1f1f1f 0%, #121212 100%);
+        }
+
+        #search {
+            padding: 12px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 25px;
+            border: none;
+            margin-top: 20px;
+            outline: none;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .film-grid {
+            padding: 40px 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-item {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+            background: #2a2a2a;
+        }
+
+        .grid-item img {
+            width: 100%;
+            border-radius: 5px;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .close {
+            color: #ffffff;
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #000;
+            font-size: 0.9rem;
+            color: #777;
+        }
     </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState } = React;
-        const { motion, AnimatePresence } = FramerMotion;
+    <header>
+        <h1>SceneBOX</h1>
+        <p>Your ultimate destination for anime streaming in Nigeria.</p>
+        <input type="text" id="search" placeholder="Search for your favorite anime...">
+    </header>
 
-        function App() {
-            const [selected, setSelected] = useState(null);
-            
-            const anime = [
-                { id: 1, t: "Solo Leveling", g: "Action", v: "q_mSSTfD3u0", i: "https://images.unsplash.com/photo-1578632738981-43c9efaa357f?w=400" },
-                { id: 2, t: "Jujutsu Kaisen", g: "Power", v: "h9nE2hZ8T8M", i: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=400" },
-                { id: 3, t: "Chainsaw Man", g: "Grit", v: "v4yLeN6u9C8", i: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400" },
-                { id: 4, t: "Demon Slayer", g: "Sword", v: "VQGCKyvzIM4", i: "https://images.unsplash.com/photo-1528319725582-ddc096101511?w=400" }
-            ];
+    <main>
+        <section class="hero">
+            <img src="https://images.unsplash.com/photo-1578632738980-43314a5b452d?auto=format&fit=crop&w=1200&q=80" alt="SceneBOX Hero Image">
+        </section>
 
-            return (
-                <div className="min-h-screen pb-20">
-                    {/* Header */}
-                    <nav className="p-6 flex justify-between items-center fixed w-full z-50 bg-black/50 backdrop-blur-md">
-                        <h1 className="text-2xl font-black text-indigo-500 tracking-tighter">SceneBOX</h1>
-                        <div className="hidden md:block space-x-6 text-sm font-bold uppercase tracking-widest">
-                            <a href="#" className="text-white">Home</a>
-                            <a href="#" className="text-gray-400 hover:text-white">Anime</a>
-                            <a href="#" className="text-gray-400 hover:text-white">New</a>
-                        </div>
-                    </nav>
-
-                    {/* Hero */}
-                    <div className="relative h-[70vh] flex items-center px-6 md:px-20 overflow-hidden">
-                        <div className="absolute inset-0 z-0">
-                            <div className="absolute inset-0 hero-gradient z-10" />
-                            <img src="https://images.unsplash.com/photo-1541562232579-512a21360020?w=1600" className="w-full h-full object-cover" />
-                        </div>
-                        <div className="relative z-20 mt-20">
-                            <h2 className="text-5xl md:text-8xl font-black mb-4">NEO LAGOS</h2>
-                            <p className="max-w-md text-gray-300 mb-8">Launching 2026. The future of Nigerian Anime streaming starts here.</p>
-                            <button className="bg-indigo-600 hover:bg-indigo-700 px-10 py-4 rounded-full font-bold transition-all transform hover:scale-105">WATCH TRAILER</button>
-                        </div>
-                    </div>
-
-                    {/* Grid */}
-                    <div className="px-6 md:px-20 mt-10">
-                        <h3 className="text-xl font-bold mb-6 text-indigo-400">Trending in Nigeria</h3>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            {anime.map(item => (
-                                <motion.div 
-                                    key={item.id}
-                                    whileHover={{ y: -10 }}
-                                    onClick={() => setSelected(item)}
-                                    className="cursor-pointer"
-                                >
-                                    <div className="aspect-[2/3] rounded-xl overflow-hidden border border-white/10 hover:border-indigo-500 transition-colors">
-                                        <img src={item.i} className="w-full h-full object-cover" />
-                                    </div>
-                                    <h4 className="mt-3 font-bold text-sm uppercase">{item.t}</h4>
-                                    <p className="text-xs text-gray-500">{item.g}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Modal */}
-                    <AnimatePresence>
-                        {selected && (
-                            <motion.div 
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
-                                onClick={() => setSelected(null)}
-                            >
-                                <motion.div 
-                                    initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-                                    className="w-full max-w-4xl aspect-video bg-black rounded-2xl overflow-hidden relative"
-                                    onClick={e => e.stopPropagation()}
-                                >
-                                    <iframe 
-                                        className="w-full h-full"
-                                        src={`https://www.youtube.com/embed/${selected.v}?autoplay=1`}
-                                        frameBorder="0" allowFullScreen
-                                    />
-                                    <button className="absolute top-4 right-4 text-white font-bold" onClick={() => setSelected(null)}>CLOSE [X]</button>
-                                </motion.div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+        <section class="film-grid">
+            <h2>Featured Anime</h2>
+            <div class="grid-container">
+                <div class="grid-item" onclick="openModal('dQw4w9WgXcQ')">
+                    <img src="https://placehold.co/600x400/222/white?text=Anime+Title+1" alt="Anime Title 1">
+                    <p>Anime Title 1</p>
                 </div>
-            );
+                <div class="grid-item" onclick="openModal('dQw4w9WgXcQ')">
+                    <img src="https://placehold.co/600x400/222/white?text=Anime+Title+2" alt="Anime Title 2">
+                    <p>Anime Title 2</p>
+                </div>
+                <div class="grid-item" onclick="openModal('dQw4w9WgXcQ')">
+                    <img src="https://placehold.co/600x400/222/white?text=Anime+Title+3" alt="Anime Title 3">
+                    <p>Anime Title 3</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="watchModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <div class="video-container">
+                <iframe id="videoFrame" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SceneBOX Nigeria. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JAVASCRIPT LOGIC
+        function openModal(videoId) {
+            const modal = document.getElementById("watchModal");
+            const videoFrame = document.getElementById("videoFrame");
+            // Appending autoplay to make it smoother
+            videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            modal.style.display = "block";
+            // Prevent background scrolling when modal is open
+            document.body.style.overflow = "hidden";
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        function closeModal() {
+            const modal = document.getElementById("watchModal");
+            const videoFrame = document.getElementById("videoFrame");
+            videoFrame.src = "";
+            modal.style.display = "none";
+            // Re-enable scrolling
+            document.body.style.overflow = "auto";
+        }
+
+        // Close modal if user clicks outside the video
+        window.onclick = function(event) {
+            const modal = document.getElementById("watchModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
     </script>
 </body>
 </html>
